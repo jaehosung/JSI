@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 using X;
 
 namespace JSI.Scenario {
     public partial class JSIEmptyScenario : XScenario {
         public class EmptyScene : JSIScene {
-            // singleton pattern 
+            // singleton pattern
             private static EmptyScene mSingleton = null;
             public static EmptyScene getSingleton() {
                 Debug.Assert(EmptyScene.mSingleton != null);
@@ -19,10 +20,10 @@ namespace JSI.Scenario {
             }
 
             // event handling methods
-            public override void handleKeyDown(KeyCode kc) {
+            public override void handleKeyDown(Key k) {
             }
 
-            public override void handleKeyUp(KeyCode kc) {
+            public override void handleKeyUp(Key k) {
             }
 
             public override void handlePenDown(Vector2 pt) {
@@ -32,6 +33,24 @@ namespace JSI.Scenario {
             }
 
             public override void handlePenUp(Vector2 pt) {
+            }
+
+            public override void handleEraserDown(Vector2 pt) {
+            }
+
+            public override void handleEraserDrag(Vector2 pt) {
+            }
+
+            public override void handleEraserUp(Vector2 pt) {
+            }
+
+            public override void handleTouchDown() {
+            }
+
+            public override void handleTouchDrag() {
+            }
+
+            public override void handleTouchUp() {
             }
 
             public override void getReady() {

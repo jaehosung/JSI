@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using JSI.Geom;
 
 namespace JSI.Cmd {
-    public class JSICmdToScaleStandingCard : XLoggableCmd {
+    public class JSICmdToScaleStandingCardWithPen : XLoggableCmd {
         // fields
         private Vector2 mPrevPt = Vector2.zero;
         private Vector2 mCurPt = Vector2.zero;
 
         // private constructor
-        private JSICmdToScaleStandingCard(XApp app) : base(app) {
+        private JSICmdToScaleStandingCardWithPen(XApp app) : base(app) {
             JSIApp jsi = (JSIApp)this.mApp;
             JSIPenMark penMark = jsi.getPenMarkMgr().getLastPenMark();
             this.mPrevPt = penMark.getRecentPt(1);
@@ -21,13 +21,21 @@ namespace JSI.Cmd {
 
         // static method to construct and execute this command
         public static bool execute(XApp app) {
-            JSICmdToScaleStandingCard cmd =
-                new JSICmdToScaleStandingCard(app);
+            JSICmdToScaleStandingCardWithPen cmd =
+                new JSICmdToScaleStandingCardWithPen(app);
             return cmd.execute();
         }
 
         protected override bool defineCmd() {
             JSIApp jsi = (JSIApp)this.mApp;
+            JSICmdToScaleStandingCardWithPen.scaleStandingCard(jsi, this.mPrevPt,
+                this.mCurPt);
+            return true;
+        }
+
+        public static void scaleStandingCard(JSIApp jsi, Vector2 prevPt,
+            Vector2 curPt) {
+
             JSIPerspCameraPerson cp = jsi.getPerspCameraPerson();
             JSIEditStandingCardScenario scenario =
                 JSIEditStandingCardScenario.getSingleton();
@@ -46,13 +54,13 @@ namespace JSI.Cmd {
                 standingCard.getGameObject().transform.position);
 
             // project the previous screen point to the plane.
-            Ray prevPtRay = cp.getCamera().ScreenPointToRay(this.mPrevPt);
+            Ray prevPtRay = cp.getCamera().ScreenPointToRay(prevPt);
             float prevPtDist = float.NaN;
             cardPlane.Raycast(prevPtRay, out prevPtDist);
             Vector3 prevPtOnPlane = prevPtRay.GetPoint(prevPtDist);
 
             // project the current screen point to the plane.
-            Ray curPtRay = cp.getCamera().ScreenPointToRay(this.mCurPt);
+            Ray curPtRay = cp.getCamera().ScreenPointToRay(curPt);
             float curPtDist = float.NaN;
             cardPlane.Raycast(curPtRay, out curPtDist);
             Vector3 curPtOnPlane = curPtRay.GetPoint(curPtDist);
@@ -108,8 +116,6 @@ namespace JSI.Cmd {
                     ptCurve3D.setPts(scaledPt3Ds);
                 }
             }
-
-            return true;
         }
 
         protected override XJson createLogData() {

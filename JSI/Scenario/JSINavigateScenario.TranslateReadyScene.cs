@@ -1,11 +1,12 @@
 ﻿using JSI.Cmd;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using X;
 
 namespace JSI.Scenario {
     public partial class JSINavigateScenario : XScenario {
         public class TranslateReadyScene : JSIScene {
-            // singleton pattern 
+            // singleton pattern
             private static TranslateReadyScene mSingleton = null;
             public static TranslateReadyScene getSingleton() {
                 Debug.Assert(TranslateReadyScene.mSingleton != null);
@@ -20,16 +21,16 @@ namespace JSI.Scenario {
             }
 
             // event handling methods
-            public override void handleKeyDown(KeyCode kc) {
+            public override void handleKeyDown(Key k) {
             }
 
-            public override void handleKeyUp(KeyCode kc) {
+            public override void handleKeyUp(Key k) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
-                switch (kc) {
-                    case KeyCode.LeftControl:
+                switch (k) {
+                    case Key.LeftCtrl:
                         XCmdToChangeScene.execute(jsi, this.mReturnScene, null);
                         break;
-                    case KeyCode.LeftAlt:
+                    case Key.LeftAlt:
                         XCmdToChangeScene.execute(jsi,
                             JSINavigateScenario.RotateReadyScene.getSingleton(),
                             this.mReturnScene);
@@ -40,13 +41,15 @@ namespace JSI.Scenario {
 
             public override void handlePenDown(Vector2 pt) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
+                JSICursor2D pc = jsi.getCursorMgr().getPenCursor();
 
-                foreach (JSIStandingCard sc in 
+                foreach (JSIStandingCard sc in
                     jsi.getStandingCardMgr().getStandingCards()) {
-                    if (jsi.getCursor().hits(sc.getStand())) {
-                        JSICmdToSelectSmallestStandingCardByStand.execute(jsi);
+                    if (pc.hits(sc.getStand())) {
+                        JSICmdToSelectSmallestStandingCardByStand.execute(jsi,
+                            pc);
                         XCmdToChangeScene.execute(jsi,
-                            JSIEditStandingCardScenario.MoveStandingCardScene.
+                            JSIEditStandingCardScenario.MoveWithPenScene.
                             getSingleton(), this.mReturnScene);
                         return;
                     }
@@ -63,11 +66,29 @@ namespace JSI.Scenario {
             public override void handlePenUp(Vector2 pt) {
             }
 
+            public override void handleEraserDown(Vector2 pt) {
+            }
+
+            public override void handleEraserDrag(Vector2 pt) {
+            }
+
+            public override void handleEraserUp(Vector2 pt) {
+            }
+
+            public override void handleTouchDown() {
+            }
+
+            public override void handleTouchDrag() {
+            }
+
+            public override void handleTouchUp() {
+            }
+
             public override void getReady() {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
 
                 // activate stands.
-                // deactivate scale handles. 
+                // deactivate scale handles.
                 foreach (JSIStandingCard sc in
                     jsi.getStandingCardMgr().getStandingCards()) {
                     sc.getStand().getGameObject().SetActive(true);

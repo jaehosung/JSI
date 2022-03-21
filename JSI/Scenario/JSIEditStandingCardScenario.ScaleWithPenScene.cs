@@ -1,32 +1,31 @@
 ﻿using JSI.Cmd;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using X;
 
 namespace JSI.Scenario {
     public partial class JSIEditStandingCardScenario : XScenario {
-        public class ScaleStandingCardScene : JSIScene {
+        public class ScaleWithPenScene : JSIScene {
             // singleton pattern
-            private static ScaleStandingCardScene mSingleton = null;
-            public static ScaleStandingCardScene getSingleton() {
-                Debug.Assert(ScaleStandingCardScene.mSingleton != null);
-                return ScaleStandingCardScene.mSingleton;
+            private static ScaleWithPenScene mSingleton = null;
+            public static ScaleWithPenScene getSingleton() {
+                Debug.Assert(ScaleWithPenScene.mSingleton != null);
+                return ScaleWithPenScene.mSingleton;
             }
-            public static ScaleStandingCardScene createSingleton(
-                XScenario scenario) {
-                Debug.Assert(ScaleStandingCardScene.mSingleton == null);
-                ScaleStandingCardScene.mSingleton = new
-                    ScaleStandingCardScene(scenario);
-                return ScaleStandingCardScene.mSingleton;
+            public static ScaleWithPenScene createSingleton(XScenario scenario) {
+                Debug.Assert(ScaleWithPenScene.mSingleton == null);
+                ScaleWithPenScene.mSingleton = new ScaleWithPenScene(scenario);
+                return ScaleWithPenScene.mSingleton;
             }
-            private ScaleStandingCardScene(XScenario scenario) :
+            private ScaleWithPenScene(XScenario scenario) :
                 base(scenario) {
             }
 
             // event handling methods
-            public override void handleKeyDown(KeyCode kc) {
+            public override void handleKeyDown(Key k) {
             }
 
-            public override void handleKeyUp(KeyCode kc) {
+            public override void handleKeyUp(Key k) {
             }
 
             public override void handlePenDown(Vector2 pt) {
@@ -34,12 +33,30 @@ namespace JSI.Scenario {
 
             public override void handlePenDrag(Vector2 pt) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
-                JSICmdToScaleStandingCard.execute(jsi);
+                JSICmdToScaleStandingCardWithPen.execute(jsi);
             }
 
             public override void handlePenUp(Vector2 pt) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
                 XCmdToChangeScene.execute(jsi, this.mReturnScene, null);
+            }
+
+            public override void handleEraserDown(Vector2 pt) {
+            }
+
+            public override void handleEraserDrag(Vector2 pt) {
+            }
+
+            public override void handleEraserUp(Vector2 pt) {
+            }
+
+            public override void handleTouchDown() {
+            }
+
+            public override void handleTouchDrag() {
+            }
+
+            public override void handleTouchUp() {
             }
 
             public override void getReady() {

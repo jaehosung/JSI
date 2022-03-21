@@ -2,21 +2,23 @@
 using JSI.Scenario;
 
 namespace JSI.Cmd {
-    public class JSICmdToSelectSmallestStandingCardByStand :
-        XLoggableCmd {
+    public class JSICmdToSelectSmallestStandingCardByStand : XLoggableCmd {
         // fields
-        JSIStandingCard mSelectedStandingCard = null;
+        private JSIStandingCard mSelectedStandingCard = null;
+        private JSICursor2D mCursor = null;
 
         // private constructor
-        private JSICmdToSelectSmallestStandingCardByStand(XApp app) :
-            base(app) {
+        private JSICmdToSelectSmallestStandingCardByStand(XApp app,
+            JSICursor2D cursor) : base(app) {
+
             JSIApp jsi = (JSIApp)this.mApp;
+            this.mCursor = cursor;
         }
 
         // static method to construct and execute this command
-        public static bool execute(XApp app) {
+        public static bool execute(XApp app, JSICursor2D cursor) {
             JSICmdToSelectSmallestStandingCardByStand cmd =
-                new JSICmdToSelectSmallestStandingCardByStand(app);
+                new JSICmdToSelectSmallestStandingCardByStand(app, cursor);
             return cmd.execute();
         }
 
@@ -24,7 +26,8 @@ namespace JSI.Cmd {
             JSIApp jsi = (JSIApp)this.mApp;
             JSIEditStandingCardScenario scenario =
                 JSIEditStandingCardScenario.getSingleton();
-            this.mSelectedStandingCard = scenario.selectStandingCardByStand();
+            this.mSelectedStandingCard = scenario.selectStandingCardByStand(
+                this.mCursor);
             scenario.setSelectedStandingCard(this.mSelectedStandingCard);
             return true;
         }

@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace JSI {
     public class JSIKeyEventSource {
         // constants
-        private static readonly List<KeyCode> WATCHING_KEYCODE =
-            new List<KeyCode>() {
-                KeyCode.LeftControl, // for rotating
-                KeyCode.LeftAlt, // for translating
-                KeyCode.Return, // for creating a standing card
-                KeyCode.Z, // undo
-                KeyCode.Y, // redo
-                KeyCode.S, // for saving file
-                KeyCode.O, // for opening file
+        private static readonly List<Key> WATCHING_KEYS =
+            new List<Key>() {
+                Key.LeftCtrl, // for rotating
+                Key.LeftAlt, // for translating
+                Key.Enter, // for creating a standing card
+                Key.Z, // undo
+                Key.Y, // redo
+                Key.S, // for saving file
+                Key.O, // for opening file
             };
 
         // fields
@@ -27,12 +28,12 @@ namespace JSI {
 
         // methods
         public void update() {
-            foreach (KeyCode kc in JSIKeyEventSource.WATCHING_KEYCODE) {
-                if (Input.GetKeyDown(kc)) {
-                    this.mEventListener.keyPressed(kc);
+            foreach (Key k in JSIKeyEventSource.WATCHING_KEYS) {
+                if (Keyboard.current[k].wasPressedThisFrame) {
+                    this.mEventListener.keyPressed(k);
                 }
-                if (Input.GetKeyUp(kc)) {
-                    this.mEventListener.keyReleased(kc);
+                if (Keyboard.current[k].wasReleasedThisFrame) {
+                    this.mEventListener.keyReleased(k);
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿using JSI.Cmd;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using X;
 
 namespace JSI.Scenario {
@@ -20,10 +21,10 @@ namespace JSI.Scenario {
             }
 
             // event handling methods
-            public override void handleKeyDown(KeyCode kc) {
+            public override void handleKeyDown(Key k) {
             }
 
-            public override void handleKeyUp(KeyCode kc) {
+            public override void handleKeyUp(Key k) {
             }
 
             public override void handlePenDown(Vector2 pt) {
@@ -38,6 +39,24 @@ namespace JSI.Scenario {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
                 JSICmdToAddCurPtCurve2DToPtCurve2Ds.execute(jsi);
                 XCmdToChangeScene.execute(jsi, this.mReturnScene, null);
+            }
+
+            public override void handleEraserDown(Vector2 pt) {
+            }
+
+            public override void handleEraserDrag(Vector2 pt) {
+            }
+
+            public override void handleEraserUp(Vector2 pt) {
+            }
+
+            public override void handleTouchDown() {
+            }
+
+            public override void handleTouchDrag() {
+            }
+
+            public override void handleTouchUp() {
             }
 
             public override void getReady() {

@@ -6,7 +6,7 @@ using X;
 
 namespace JSI.Scenario {
     public partial class JSIEditStandingCardScenario : XScenario {
-        // singleton pattern 
+        // singleton pattern
         private static JSIEditStandingCardScenario mSingleton = null;
         public static JSIEditStandingCardScenario getSingleton() {
             Debug.Assert(JSIEditStandingCardScenario.mSingleton != null);
@@ -14,19 +14,26 @@ namespace JSI.Scenario {
         }
         public static JSIEditStandingCardScenario createSingleton(XApp app) {
             Debug.Assert(JSIEditStandingCardScenario.mSingleton == null);
-            JSIEditStandingCardScenario.mSingleton = 
+            JSIEditStandingCardScenario.mSingleton =
                 new JSIEditStandingCardScenario(app);
             return JSIEditStandingCardScenario.mSingleton;
         }
         private JSIEditStandingCardScenario(XApp app) : base(app) {
+            this.mManipulatingTouchMarks = new List<JSITouchMark>();
         }
 
         protected override void addScenes() {
-            this.addScene(JSIEditStandingCardScenario.RotateStandingCardScene.
+            this.addScene(JSIEditStandingCardScenario.RotateWithPenScene.
                 createSingleton(this));
-            this.addScene(JSIEditStandingCardScenario.MoveStandingCardScene.
+            this.addScene(JSIEditStandingCardScenario.MoveWithPenScene.
                 createSingleton(this));
-            this.addScene(JSIEditStandingCardScenario.ScaleStandingCardScene.
+            this.addScene(JSIEditStandingCardScenario.ScaleWithPenScene.
+                createSingleton(this));
+            this.addScene(JSIEditStandingCardScenario.MoveWithTouchScene.
+                createSingleton(this));
+            this.addScene(JSIEditStandingCardScenario.ScaleWithTouchScene.
+                createSingleton(this));
+            this.addScene(JSIEditStandingCardScenario.MoveNRotateWithTouchScene.
                 createSingleton(this));
         }
 
@@ -38,15 +45,19 @@ namespace JSI.Scenario {
         public void setSelectedStandingCard(JSIStandingCard sc) {
             this.mSelectedStandingCard = sc;
         }
+        private List<JSITouchMark> mManipulatingTouchMarks = null;
+        public List<JSITouchMark> getManipulatingTouchMarks() {
+            return this.mManipulatingTouchMarks;
+        }
 
         // methods
-        public JSIStandingCard selectStandingCardByStand() {
+        public JSIStandingCard selectStandingCardByStand(JSICursor2D cursor) {
             JSIApp jsi = (JSIApp)this.mApp;
             List<JSIStandingCard> hitStandingCards =
                 new List<JSIStandingCard>();
-            foreach (JSIStandingCard sc in 
+            foreach (JSIStandingCard sc in
                 jsi.getStandingCardMgr().getStandingCards()) {
-                if (jsi.getCursor().hits(sc.getStand())) {
+                if (cursor.hits(sc.getStand())) {
                     hitStandingCards.Add(sc);
                 }
             }
@@ -70,13 +81,15 @@ namespace JSI.Scenario {
             return smallestStandingCard;
         }
 
-        public JSIStandingCard selectStandingCardByScaleHandle() {
+        public JSIStandingCard selectStandingCardByScaleHandle(
+            JSICursor2D cursor) {
+
             JSIApp jsi = (JSIApp)this.mApp;
-            List<JSIStandingCard> hitStandingCards =
-                new List<JSIStandingCard>();
-            foreach (JSIStandingCard sc in
-                jsi.getStandingCardMgr().getStandingCards()) {
-                if (jsi.getCursor().hits(sc.getScaleHandle())) {
+            List<JSIStandingCard> hitStandingCards = new List<JSIStandingCard>();
+            foreach (JSIStandingCard sc in jsi.getStandingCardMgr().
+                getStandingCards()) {
+
+                if (cursor.hits(sc.getScaleHandle())) {
                     hitStandingCards.Add(sc);
                 }
             }

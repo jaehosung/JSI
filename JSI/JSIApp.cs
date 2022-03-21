@@ -18,6 +18,10 @@ namespace JSI {
         public override XLogMgr getLogMgr() {
             return this.mLogMgr;
         }
+        private JSITouchMarkMgr mTouchMarkMgr = null;
+        public JSITouchMarkMgr getTouchMarkMgr() {
+            return this.mTouchMarkMgr;
+        }
         private JSIPenMarkMgr mPenMarkMgr = null;
         public JSIPenMarkMgr getPenMarkMgr() {
             return this.mPenMarkMgr;
@@ -40,17 +44,40 @@ namespace JSI {
         }
 
         private JSIKeyEventSource mKeyEventSource = null;
-        private JSIMouseEventSource mMouseEventSource = null;
+        // private JSIMouseEventSource mMouseEventSource = null;
+        private JSIPenEventSource mPenEventSource = null;
+        private JSITouchEventSource mTouchEventSource = null;
         private JSIEventListener mEventListener = null;
 
-        private JSICursor2D mCursor = null;
-        public JSICursor2D getCursor() {
-            return this.mCursor;
+        // private JSICursor2D mCursor = null;
+        // public JSICursor2D getCursor() {
+        //     return this.mCursor;
+        // }
+        private JSICursorMgr mCursorMgr = null;
+        public JSICursorMgr getCursorMgr() {
+            return this.mCursorMgr;
+        }
+
+        private void configureUnity() {
+            // necessary for manually refreshing collider physics
+            Physics2D.simulationMode = SimulationMode2D.Script; // Unity 2020
+            // Physics2D.autoSimulation = false; // Unity 2019
+            // enable multi-threading for faster physics performance
+            Physics2D.jobOptions = new PhysicsJobOptions2D {
+                useMultithreading = true };
+            // for disabling all the unncessary graphics options
+            QualitySettings.SetQualityLevel(0);
+            // for maximum refresh rate of pen and touch input
+            Application.targetFrameRate = -1; // does not work if VR is connected
+            // the only graphics quality setting that should be important
+            QualitySettings.antiAliasing = 0;
+            // QualitySettings.antiAliasing = 4;
+            // enable collision with both sides of the mesh
+            Physics.queriesHitBackfaces = true;
         }
 
         private void Start() {
-            // Unity physics options
-            Physics.queriesHitBackfaces = true;
+            this.configureUnity();
 
             this.mPerspCameraPerson = new JSIPerspCameraPerson();
             this.mOrthoCameraPerson = new JSIOrthoCameraPerson();
@@ -72,18 +99,26 @@ namespace JSI {
             this.mLogMgr.setPrintOn(true);
 
             this.mKeyEventSource = new JSIKeyEventSource();
-            this.mMouseEventSource = new JSIMouseEventSource();
+            // this.mMouseEventSource = new JSIMouseEventSource();
+            this.mPenEventSource = new JSIPenEventSource();
+            this.mTouchEventSource = new JSITouchEventSource();
             this.mEventListener = new JSIEventListener(this);
-            this.mCursor = new JSICursor2D(this);
+            // this.mCursor = new JSICursor2D(this);
+            this.mTouchMarkMgr = new JSITouchMarkMgr();
+            this.mCursorMgr = new JSICursorMgr(this);
 
             this.mKeyEventSource.setEventListener(this.mEventListener);
-            this.mMouseEventSource.setEventListener(this.mEventListener);
+            // this.mMouseEventSource.setEventListener(this.mEventListener);
+            this.mPenEventSource.setEventListener(this.mEventListener);
+            this.mTouchEventSource.setEventListener(this.mEventListener);
         }
 
         private void Update() {
             this.mOrthoCameraPerson.update();
             this.mKeyEventSource.update();
-            this.mMouseEventSource.update();
+            // this.mMouseEventSource.update();
+            this.mPenEventSource.update();
+            this.mTouchEventSource.update();
         }
     }
 }

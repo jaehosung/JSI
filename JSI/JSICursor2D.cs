@@ -10,13 +10,21 @@ namespace JSI {
 
         // fields
         private JSIApp mJSI = null;
+        private string mId = string.Empty;
+        public string getId() {
+            return this.mId;
+        }
 
         // constructor
-        public JSICursor2D(JSIApp jsi) : base("Cursor2D",
-            JSICursor2D.RADIUS, JSICursor2D.COLOR) {
+        public JSICursor2D(JSIApp jsi, string id, string name, float radius,
+            Vector2 pt) : base($"{ name }({ id })/Cursor2D", radius,
+            JSICursor2D.COLOR) {
+
             this.mJSI = jsi;
+            this.mId = id;
+            this.mGameObject.transform.position = pt;
         }
-        
+
         // methods
         public bool intersects(JSIAppGeom2D appGeom) {
             return this.getCollider().IsTouching(appGeom.getCollider());

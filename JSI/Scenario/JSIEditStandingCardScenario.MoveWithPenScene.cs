@@ -1,44 +1,40 @@
 ﻿using JSI.Cmd;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using X;
 
 namespace JSI.Scenario {
     public partial class JSIEditStandingCardScenario : XScenario {
-        public class RotateStandingCardScene : JSIScene {
+        public class MoveWithPenScene : JSIScene {
             // singleton pattern
-            private static RotateStandingCardScene mSingleton = null;
-            public static RotateStandingCardScene getSingleton() {
-                Debug.Assert(RotateStandingCardScene.mSingleton != null);
-                return RotateStandingCardScene.mSingleton;
+            private static MoveWithPenScene mSingleton = null;
+            public static MoveWithPenScene getSingleton() {
+                Debug.Assert(MoveWithPenScene.mSingleton != null);
+                return MoveWithPenScene.mSingleton;
             }
-            public static RotateStandingCardScene createSingleton(
-                XScenario scenario) {
-                Debug.Assert(RotateStandingCardScene.mSingleton == null);
-                RotateStandingCardScene.mSingleton = new
-                    RotateStandingCardScene(scenario);
-                return RotateStandingCardScene.mSingleton;
+            public static MoveWithPenScene createSingleton(XScenario scenario) {
+                Debug.Assert(MoveWithPenScene.mSingleton == null);
+                MoveWithPenScene.mSingleton = new MoveWithPenScene(scenario);
+                return MoveWithPenScene.mSingleton;
             }
-            private RotateStandingCardScene(XScenario scenario) :
-                base(scenario) {
+            private MoveWithPenScene(XScenario scenario) : base(scenario) {
             }
 
             // event handling methods
-            public override void handleKeyDown(KeyCode kc) {
-                JSIApp jsi = (JSIApp)this.mScenario.getApp();
-                switch (kc) {
-                    case KeyCode.LeftAlt:
-                        XCmdToChangeScene.execute(jsi,
-                            JSIEditStandingCardScenario.MoveStandingCardScene.
-                            getSingleton(), this.mReturnScene);
-                        break;
-                }
+            public override void handleKeyDown(Key k) {
             }
 
-            public override void handleKeyUp(KeyCode kc) {
+            public override void handleKeyUp(Key k) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
-                switch (kc) {
-                    case KeyCode.LeftControl:
+                switch (k) {
+                    case Key.LeftCtrl:
                         XCmdToChangeScene.execute(jsi, this.mReturnScene, null);
+                        break;
+                    case Key.LeftAlt:
+                        XCmdToChangeScene.execute(jsi,
+                            JSIEditStandingCardScenario.
+                            RotateWithPenScene.getSingleton(),
+                            this.mReturnScene);
                         break;
                 }
             }
@@ -48,14 +44,32 @@ namespace JSI.Scenario {
 
             public override void handlePenDrag(Vector2 pt) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
-                JSICmdToRotateStandingCard.execute(jsi);
+                JSICmdToMoveStandingCardWithPen.execute(jsi);
             }
 
             public override void handlePenUp(Vector2 pt) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
                 XCmdToChangeScene.execute(jsi,
-                    JSINavigateScenario.RotateReadyScene.getSingleton(),
+                    JSINavigateScenario.TranslateReadyScene.getSingleton(),
                     this.mReturnScene);
+            }
+
+            public override void handleEraserDown(Vector2 pt) {
+            }
+
+            public override void handleEraserDrag(Vector2 pt) {
+            }
+
+            public override void handleEraserUp(Vector2 pt) {
+            }
+
+            public override void handleTouchDown() {
+            }
+
+            public override void handleTouchDrag() {
+            }
+
+            public override void handleTouchUp() {
             }
 
             public override void getReady() {

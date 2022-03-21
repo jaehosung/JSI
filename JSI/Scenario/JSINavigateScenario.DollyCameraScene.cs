@@ -1,11 +1,12 @@
 ﻿using JSI.Cmd;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using X;
 
 namespace JSI.Scenario {
     public partial class JSINavigateScenario : XScenario {
         public class DollyCameraScene : JSIScene {
-            // singleton pattern 
+            // singleton pattern
             private static DollyCameraScene mSingleton = null;
             public static DollyCameraScene getSingleton() {
                 Debug.Assert(DollyCameraScene.mSingleton != null);
@@ -20,16 +21,16 @@ namespace JSI.Scenario {
             }
 
             // event handling methods
-            public override void handleKeyDown(KeyCode kc) {
+            public override void handleKeyDown(Key k) {
             }
 
-            public override void handleKeyUp(KeyCode kc) {
+            public override void handleKeyUp(Key k) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
-                switch (kc) {
-                    case KeyCode.LeftControl:
+                switch (k) {
+                    case Key.LeftCtrl:
                         XCmdToChangeScene.execute(jsi, this.mReturnScene, null);
                         break;
-                    case KeyCode.LeftAlt:
+                    case Key.LeftAlt:
                         XCmdToChangeScene.execute(jsi,
                             JSINavigateScenario.TumbleCameraScene.getSingleton(),
                             this.mReturnScene);
@@ -51,6 +52,24 @@ namespace JSI.Scenario {
                 XCmdToChangeScene.execute(jsi,
                     JSINavigateScenario.TranslateReadyScene.getSingleton(),
                     this.mReturnScene);
+            }
+
+            public override void handleEraserDown(Vector2 pt) {
+            }
+
+            public override void handleEraserDrag(Vector2 pt) {
+            }
+
+            public override void handleEraserUp(Vector2 pt) {
+            }
+
+            public override void handleTouchDown() {
+            }
+
+            public override void handleTouchDrag() {
+            }
+
+            public override void handleTouchUp() {
             }
 
             public override void getReady() {

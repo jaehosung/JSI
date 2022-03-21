@@ -1,5 +1,6 @@
 ﻿using JSI.Cmd;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using X;
 
 namespace JSI.Scenario {
@@ -20,10 +21,10 @@ namespace JSI.Scenario {
             }
 
             // event handling methods
-            public override void handleKeyDown(KeyCode kc) {
+            public override void handleKeyDown(Key k) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
-                switch (kc) {
-                    case KeyCode.LeftAlt:
+                switch (k) {
+                    case Key.LeftAlt:
                         XCmdToChangeScene.execute(jsi,
                             JSINavigateScenario.TranslateReadyScene.getSingleton(),
                             this.mReturnScene);
@@ -31,10 +32,10 @@ namespace JSI.Scenario {
                 }
             }
 
-            public override void handleKeyUp(KeyCode kc) {
+            public override void handleKeyUp(Key k) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
-                switch (kc) {
-                    case KeyCode.LeftControl:
+                switch (k) {
+                    case Key.LeftCtrl:
                         XCmdToChangeScene.execute(jsi, this.mReturnScene, null);
                         break;
                 }
@@ -42,13 +43,15 @@ namespace JSI.Scenario {
 
             public override void handlePenDown(Vector2 pt) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
+                JSICursor2D pc = jsi.getCursorMgr().getPenCursor();
 
                 foreach (JSIStandingCard sc in
                     jsi.getStandingCardMgr().getStandingCards()) {
-                    if (jsi.getCursor().hits(sc.getStand())) {
-                        JSICmdToSelectSmallestStandingCardByStand.execute(jsi);
+                    if (pc.hits(sc.getStand())) {
+                        JSICmdToSelectSmallestStandingCardByStand.execute(jsi,
+                            pc);
                         XCmdToChangeScene.execute(jsi,
-                            JSIEditStandingCardScenario.RotateStandingCardScene.
+                            JSIEditStandingCardScenario.RotateWithPenScene.
                             getSingleton(), this.mReturnScene);
                         return;
                     }
@@ -63,6 +66,24 @@ namespace JSI.Scenario {
             }
 
             public override void handlePenUp(Vector2 pt) {
+            }
+
+            public override void handleEraserDown(Vector2 pt) {
+            }
+
+            public override void handleEraserDrag(Vector2 pt) {
+            }
+
+            public override void handleEraserUp(Vector2 pt) {
+            }
+
+            public override void handleTouchDown() {
+            }
+
+            public override void handleTouchDrag() {
+            }
+
+            public override void handleTouchUp() {
             }
 
             public override void getReady() {

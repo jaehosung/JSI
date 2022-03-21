@@ -1,5 +1,6 @@
 ﻿using JSI.Cmd;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using X;
 
 namespace JSI.Scenario {
@@ -20,10 +21,10 @@ namespace JSI.Scenario {
             }
 
             // event handling methods
-            public override void handleKeyDown(KeyCode kc) {
+            public override void handleKeyDown(Key k) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
-                switch (kc) {
-                    case KeyCode.LeftControl:
+                switch (k) {
+                    case Key.LeftCtrl:
                         XCmdToChangeScene.execute(jsi,
                             JSINavigateScenario.RotateReadyScene.getSingleton(),
                             this);
@@ -31,24 +32,24 @@ namespace JSI.Scenario {
                 }
             }
 
-            public override void handleKeyUp(KeyCode kc) {
+            public override void handleKeyUp(Key k) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
-                switch (kc) {
-                    case KeyCode.Return:
+                switch (k) {
+                    case Key.Enter:
                         //JSICmdToCreateEmptyStandingCard.execute(jsi);
                         JSICmdToCreateStandingCard.execute(jsi);
                         JSICmdToTakeSnapshot.execute(jsi);
                         break;
-                    case KeyCode.Z:
+                    case Key.Z:
                         JSICmdToUndo.execute(jsi);
                         break;
-                    case KeyCode.Y:
+                    case Key.Y:
                         JSICmdToRedo.execute(jsi);
                         break;
-                    case KeyCode.S:
+                    case Key.S:
                         JSICmdToSaveFile.execute(jsi);
                         break;
-                    case KeyCode.O:
+                    case Key.O:
                         JSICmdToOpenFile.execute(jsi);
                         JSICmdToAutoSave.execute(jsi);
                         break;
@@ -57,13 +58,16 @@ namespace JSI.Scenario {
 
             public override void handlePenDown(Vector2 pt) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
-                foreach (JSIStandingCard sc in
-                    jsi.getStandingCardMgr().getStandingCards()) {
-                    if (jsi.getCursor().hits(sc.getScaleHandle())) {
+                JSICursor2D pc = jsi.getCursorMgr().getPenCursor();
+
+                foreach (JSIStandingCard sc in jsi.getStandingCardMgr().
+                    getStandingCards()) {
+
+                    if (pc.hits(sc.getScaleHandle())) {
                         JSICmdToSelectSmallestStandingCardByScaleHandle.
-                            execute(jsi);
+                            execute(jsi, pc);
                         XCmdToChangeScene.execute(jsi,
-                            JSIEditStandingCardScenario.ScaleStandingCardScene.
+                            JSIEditStandingCardScenario.ScaleWithPenScene.
                             getSingleton(), this);
                         return;
                     }
@@ -79,6 +83,51 @@ namespace JSI.Scenario {
             public override void handlePenUp(Vector2 pt) {
             }
 
+            public override void handleEraserDown(Vector2 pt) {
+            }
+
+            public override void handleEraserDrag(Vector2 pt) {
+            }
+
+            public override void handleEraserUp(Vector2 pt) {
+            }
+
+            public override void handleTouchDown() {
+                JSIApp jsi = (JSIApp)this.mScenario.getApp();
+                JSITouchMark tm = jsi.getTouchMarkMgr().getLastDownTouchMark();
+                JSICursor2D tc = jsi.getCursorMgr().findTouchCursor(tm);
+
+                foreach (JSIStandingCard sc in jsi.getStandingCardMgr().
+                    getStandingCards()) {
+
+                    // scale handle
+                    if (tc.hits(sc.getScaleHandle())) {
+                        JSICmdToSelectSmallestStandingCardByScaleHandle.
+                            execute(jsi, tc);
+                        XCmdToChangeScene.execute(jsi,
+                            JSIEditStandingCardScenario.ScaleWithTouchScene.
+                            getSingleton(), this);
+                        return;
+                    }
+
+                    // stand
+                    if (tc.hits(sc.getStand())) {
+                        JSICmdToSelectSmallestStandingCardByStand.
+                            execute(jsi, tc);
+                        XCmdToChangeScene.execute(jsi,
+                            JSIEditStandingCardScenario.MoveWithTouchScene.
+                            getSingleton(), this);
+                        return;
+                    }
+                }
+            }
+
+            public override void handleTouchDrag() {
+            }
+
+            public override void handleTouchUp() {
+            }
+
             public override void getReady() {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
 
@@ -86,9 +135,10 @@ namespace JSI.Scenario {
                 // activate scale handles.
                 foreach (JSIStandingCard sc in
                     jsi.getStandingCardMgr().getStandingCards()) {
-                    sc.getStand().getGameObject().SetActive(false);
-                    sc.getScaleHandle().getGameObject().SetActive(true);
+                    sc.highlightStand(false);
                     sc.highlightScaleHandle(false);
+                    sc.getStand().getGameObject().SetActive(true);
+                    sc.getScaleHandle().getGameObject().SetActive(true);
                 }
 
                 // auto save log & sketch

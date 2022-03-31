@@ -39,6 +39,7 @@ namespace JSI.Scenario {
                         //JSICmdToCreateEmptyStandingCard.execute(jsi);
                         JSICmdToCreateStandingCard.execute(jsi);
                         JSICmdToTakeSnapshot.execute(jsi);
+                        JSICmdToSendAddStandingCardMsg.execute(jsi);
                         break;
                     case Key.Z:
                         JSICmdToUndo.execute(jsi);

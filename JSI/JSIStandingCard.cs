@@ -36,8 +36,8 @@ namespace JSI {
 
         // constructor
         public JSIStandingCard(string id, float width, float height,
-            Vector3 pos, Quaternion rot,
-            List<JSIAppPolyline3D> ptCurve3Ds) : base($"StandingCard({ id })") {
+            Vector3 pos, Quaternion rot, List<JSIAppPolyline3D> ptCurve3Ds) :
+            base($"StandingCard({ id })") {
 
             this.mId = id;
 

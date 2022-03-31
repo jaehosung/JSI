@@ -34,6 +34,7 @@ namespace JSI.Scenario {
             public override void handlePenDrag(Vector2 pt) {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
                 JSICmdToScaleStandingCardWithPen.execute(jsi);
+                JSICmdToSendTransformStandingCardMsg.execute(jsi);
             }
 
             public override void handlePenUp(Vector2 pt) {

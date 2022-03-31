@@ -29,8 +29,14 @@ namespace JSI.Cmd {
 
         protected override bool defineCmd() {
             JSIApp jsi = (JSIApp)this.mApp;
-            JSICmdToScaleStandingCardWithPen.scaleStandingCard(jsi, this.mPrevPt,
-                this.mCurPt);
+            JSIEditStandingCardScenario scenario = JSIEditStandingCardScenario.
+                getSingleton();
+            JSIStandingCard standingCard = scenario.getSelectedStandingCard();
+
+            float scaleFactor = JSICmdToScaleStandingCardWithPen.calcScaleFactor(
+                jsi, standingCard, this.mPrevPt, this.mCurPt);
+            JSICmdToScaleStandingCardWithPen.scaleStandingCardByScaleFactor(jsi,
+                standingCard, scaleFactor);
             return true;
         }
 

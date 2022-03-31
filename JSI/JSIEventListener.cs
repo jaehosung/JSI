@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JSI.Msg;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -206,6 +207,12 @@ namespace JSI {
                     tc.destroyGameObject();
                 }
             }
+        }
+        // msg
+        public void msgReceived(JSIMsg msg) {
+            JSIScene curscene = (JSIScene) this.mJSI.getScenarioMgr().
+                getCurScene();
+            curscene.handleMsg(msg);
         }
     }
 }

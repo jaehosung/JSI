@@ -1,9 +1,18 @@
-﻿using JSI.AppObject;
+﻿using JSI.Cmd;
 using UnityEngine;
 using X;
 
 namespace JSI {
     public class JSIApp : XApp {
+        // editor fields
+        [SerializeField]
+        private string mWebSocketUri = "ws://localhost:751";
+        [SerializeField]
+        private string mUsername = "Joon Hyub Lee";
+        public string getUsername() {
+            return this.mUsername;
+        }
+
         // fields
         private JSIPerspCameraPerson mPerspCameraPerson = null;
         public JSIPerspCameraPerson getPerspCameraPerson() {
@@ -48,6 +57,10 @@ namespace JSI {
         private JSIPenEventSource mPenEventSource = null;
         private JSITouchEventSource mTouchEventSource = null;
         private JSIEventListener mEventListener = null;
+        private JSIDeliveryPerson mDeliveryPerson = null;
+        public JSIDeliveryPerson getDeliveryPerson() {
+            return this.mDeliveryPerson;
+        }
 
         // private JSICursor2D mCursor = null;
         // public JSICursor2D getCursor() {
@@ -111,6 +124,13 @@ namespace JSI {
             // this.mMouseEventSource.setEventListener(this.mEventListener);
             this.mPenEventSource.setEventListener(this.mEventListener);
             this.mTouchEventSource.setEventListener(this.mEventListener);
+
+            this.mDeliveryPerson = new JSIDeliveryPerson();
+            this.mDeliveryPerson.setEventListener(this.mEventListener);
+            this.mDeliveryPerson.connectTo(this.mWebSocketUri);
+
+            // send hello message to everyone.
+            JSICmdToSendHelloMsg.execute(this);
         }
 
         private void Update() {
@@ -119,6 +139,11 @@ namespace JSI {
             // this.mMouseEventSource.update();
             this.mPenEventSource.update();
             this.mTouchEventSource.update();
+        }
+
+        private void OnApplicationQuit() {
+            // send good bye message to everyone.
+            JSICmdToSendGoodByeMsg.execute(this);
         }
     }
 }

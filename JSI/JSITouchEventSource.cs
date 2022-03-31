@@ -74,7 +74,6 @@ namespace JSI {
                     }
                 }
             }
-            
             if (draggedTouches.Count > 0) {
                 this.mEventListener.touchDragged(draggedTouches);
             }

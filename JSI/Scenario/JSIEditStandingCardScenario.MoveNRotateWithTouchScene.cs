@@ -62,6 +62,7 @@ namespace JSI.Scenario {
                     tms.Contains(scenario.getManipulatingTouchMarks()[1])) {
 
                     JSICmdToMoveNRotateStandingCardWithTouch.execute(jsi);
+                    JSICmdToSendTransformStandingCardMsg.execute(jsi);
                 }
             }
 

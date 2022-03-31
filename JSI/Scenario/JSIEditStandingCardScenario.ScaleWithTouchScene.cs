@@ -60,6 +60,7 @@ namespace JSI.Scenario {
                     getDraggedTouchMarks();
                 if (tms.Contains(scenario.getManipulatingTouchMarks()[0])) {
                     JSICmdToScaleStandingCardWithTouch.execute(jsi);
+                    JSICmdToSendTransformStandingCardMsg.execute(jsi);
                 }
             }
 

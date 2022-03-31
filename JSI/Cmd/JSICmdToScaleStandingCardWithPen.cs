@@ -28,25 +28,21 @@ namespace JSI.Cmd {
 
         protected override bool defineCmd() {
             JSIApp jsi = (JSIApp)this.mApp;
-            JSICmdToScaleStandingCardWithPen.scaleStandingCard(jsi, this.mPrevPt,
-                this.mCurPt);
+            JSIEditStandingCardScenario scenario = JSIEditStandingCardScenario.
+                getSingleton();
+            JSIStandingCard standingCard = scenario.getSelectedStandingCard();
+
+            float scaleFactor = JSICmdToScaleStandingCardWithPen.calcScaleFactor(
+                jsi, standingCard, this.mPrevPt, this.mCurPt);
+            JSICmdToScaleStandingCardWithPen.scaleStandingCardByScaleFactor(jsi,
+                standingCard, scaleFactor);
             return true;
         }
 
-        public static void scaleStandingCard(JSIApp jsi, Vector2 prevPt,
-            Vector2 curPt) {
+        public static float calcScaleFactor(JSIApp jsi,
+            JSIStandingCard standingCard, Vector2 prevPt, Vector2 curPt) {
 
             JSIPerspCameraPerson cp = jsi.getPerspCameraPerson();
-            JSIEditStandingCardScenario scenario =
-                JSIEditStandingCardScenario.getSingleton();
-            JSIStandingCard standingCard =
-                scenario.getSelectedStandingCard();
-            JSIAppRect3D card = standingCard.getCard();
-            JSIAppCircle3D stand = standingCard.getStand();
-            JSIAppCircle3D scaleHandle = standingCard.getScaleHandle();
-            List<JSIAppPolyline3D> ptCurve3Ds =
-                standingCard.getPtCurve3Ds();
-            JSIRect3D rect = (JSIRect3D)card.getGeom();
 
             // create the ground plane.
             Plane cardPlane = new Plane(
@@ -67,6 +63,17 @@ namespace JSI.Cmd {
 
             // calculate the scale factor.
             float scaleFactor = curPtOnPlane.y / prevPtOnPlane.y;
+            return scaleFactor;
+        }
+
+        public static void scaleStandingCardByScaleFactor(JSIApp jsi,
+            JSIStandingCard standingCard, float scaleFactor) {
+
+            JSIAppRect3D card = standingCard.getCard();
+            JSIAppCircle3D stand = standingCard.getStand();
+            JSIAppCircle3D scaleHandle = standingCard.getScaleHandle();
+            List<JSIAppPolyline3D> ptCurve3Ds = standingCard.getPtCurve3Ds();
+            JSIRect3D rect = (JSIRect3D)card.getGeom();
 
             // resized the standing card.
             float newCardWidth = scaleFactor * rect.getWidth();

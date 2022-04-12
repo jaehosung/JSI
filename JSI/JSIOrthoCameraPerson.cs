@@ -2,7 +2,7 @@
 
 namespace JSI {
     public class JSIOrthoCameraPerson : JSICameraPerson {
-        // constants 
+        // constants
         public static readonly float NEAR = 0.1f; // in meter (10 cm)
         public static readonly float FAR = 2f; // in meter (2 m)
         public static readonly float SCREEN_CAMERA_DIST = 1.0f; // in meter
@@ -11,7 +11,7 @@ namespace JSI {
         private float mScreenWidth = float.NaN;
         private float mScreenHeight = float.NaN;
 
-        // constructor 
+        // constructor
         public JSIOrthoCameraPerson() : base("PerspCameraPerson") {
         }
 
@@ -23,6 +23,9 @@ namespace JSI {
 
             this.mCamera.nearClipPlane = JSIOrthoCameraPerson.NEAR;
             this.mCamera.farClipPlane = JSIOrthoCameraPerson.FAR;
+
+            // for VR compatibility
+            this.mCamera.stereoTargetEye = StereoTargetEyeMask.None;
         }
 
         protected override void defineExternalCameraParameters() {

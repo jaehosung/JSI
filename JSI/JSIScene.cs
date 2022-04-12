@@ -22,6 +22,20 @@ namespace JSI {
         public abstract void handleTouchDown();
         public abstract void handleTouchDrag();
         public abstract void handleTouchUp();
+        public void handleVRHeadsetMount() {
+            // change game display to VR
+            JSIApp jsi = (JSIApp)this.mScenario.getApp();
+            jsi.getVRCenterEyeAnchor().SetActive(true);
+            jsi.getPerspCameraPerson().getCamera().enabled = false;
+            jsi.getOrthoCameraPerson().getCamera().enabled = false;
+        }
+        public void handleVRHeadsetUnmount() {
+            // change game display to JSI
+            JSIApp jsi = (JSIApp)this.mScenario.getApp();
+            jsi.getVRCenterEyeAnchor().SetActive(false);
+            jsi.getPerspCameraPerson().getCamera().enabled = true;
+            jsi.getOrthoCameraPerson().getCamera().enabled = true;
+        }
 
         // msg
         public void handleMsg(JSIMsg msg) {

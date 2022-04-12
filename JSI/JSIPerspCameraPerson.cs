@@ -2,7 +2,7 @@
 
 namespace JSI {
     public class JSIPerspCameraPerson : JSICameraPerson {
-        // constants 
+        // constants
         public static readonly Color BG_COLOR = new Color(0.9f, 0.9f, 0.9f);
         public static readonly float FOV = 50f; // in degree
         public static readonly float NEAR = 0.01f; // in meter (1 cm)
@@ -20,7 +20,7 @@ namespace JSI {
             this.mPivot = pt;
         }
 
-        // constructor 
+        // constructor
         public JSIPerspCameraPerson() : base("PerspCameraPerson") {
         }
 
@@ -32,6 +32,9 @@ namespace JSI {
             this.mCamera.fieldOfView = JSIPerspCameraPerson.FOV;
             this.mCamera.nearClipPlane = JSIPerspCameraPerson.NEAR;
             this.mCamera.farClipPlane = JSIPerspCameraPerson.FAR;
+
+            // for VR compatibility
+            this.mCamera.stereoTargetEye = StereoTargetEyeMask.None;
         }
 
         protected override void defineExternalCameraParameters() {

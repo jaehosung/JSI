@@ -12,6 +12,13 @@ namespace JSI {
         public string getUsername() {
             return this.mUsername;
         }
+        [SerializeField]
+        private GameObject mVRCameraRig = null;
+        [SerializeField]
+        private GameObject mVRCenterEyeAnchor = null;
+        public GameObject getVRCenterEyeAnchor() {
+            return this.mVRCenterEyeAnchor;
+        }
 
         // fields
         private JSIPerspCameraPerson mPerspCameraPerson = null;
@@ -56,6 +63,7 @@ namespace JSI {
         // private JSIMouseEventSource mMouseEventSource = null;
         private JSIPenEventSource mPenEventSource = null;
         private JSITouchEventSource mTouchEventSource = null;
+        private JSIVREventSource mVREventSource = null;
         private JSIEventListener mEventListener = null;
         private JSIDeliveryPerson mDeliveryPerson = null;
         public JSIDeliveryPerson getDeliveryPerson() {
@@ -89,12 +97,26 @@ namespace JSI {
             Physics.queriesHitBackfaces = true;
         }
 
+        private void configureVR() {
+            // change game display to JSI
+            this.mVRCenterEyeAnchor.SetActive(false);
+            this.mPerspCameraPerson.getCamera().enabled = true;
+            this.mOrthoCameraPerson.getCamera().enabled = true;
+
+            // set VR camera background
+            Camera vrCamera = this.mVRCenterEyeAnchor.GetComponent<Camera>();
+            vrCamera.clearFlags = CameraClearFlags.Color;
+            vrCamera.backgroundColor = JSIPerspCameraPerson.BG_COLOR;
+        }
+
         private void Start() {
             this.configureUnity();
 
             this.mPerspCameraPerson = new JSIPerspCameraPerson();
             this.mOrthoCameraPerson = new JSIOrthoCameraPerson();
             this.mGrid = new JSIGrid();
+
+            this.configureVR();
 
             // new JSIAppRect3D("TestRect3D", 1f, 2f,
             //    new Color(0.5f, 0f, 0f, 0.5f));
@@ -115,6 +137,7 @@ namespace JSI {
             // this.mMouseEventSource = new JSIMouseEventSource();
             this.mPenEventSource = new JSIPenEventSource();
             this.mTouchEventSource = new JSITouchEventSource();
+            this.mVREventSource = new JSIVREventSource();
             this.mEventListener = new JSIEventListener(this);
             // this.mCursor = new JSICursor2D(this);
             this.mTouchMarkMgr = new JSITouchMarkMgr();
@@ -124,6 +147,7 @@ namespace JSI {
             // this.mMouseEventSource.setEventListener(this.mEventListener);
             this.mPenEventSource.setEventListener(this.mEventListener);
             this.mTouchEventSource.setEventListener(this.mEventListener);
+            this.mVREventSource.setEventListener(this.mEventListener);
 
             this.mDeliveryPerson = new JSIDeliveryPerson();
             this.mDeliveryPerson.setEventListener(this.mEventListener);
@@ -139,6 +163,7 @@ namespace JSI {
             // this.mMouseEventSource.update();
             this.mPenEventSource.update();
             this.mTouchEventSource.update();
+            this.mVREventSource.update();
         }
 
         private void OnApplicationQuit() {

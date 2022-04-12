@@ -78,6 +78,7 @@ namespace JSI {
                 penCursor.getGameObject().SetActive(false);
             }
         }
+        // eraser
         public void eraserDown(Vector2 pt) {
             if (this.mJSI.getPenMarkMgr().eraserDown(pt)) {
                 // activate pen cursor
@@ -94,7 +95,6 @@ namespace JSI {
                 curscene.handleEraserDown(pt);
             }
         }
-
         public void eraserDragged(Vector2 pt) {
             if (this.mJSI.getPenMarkMgr().eraserDrag(pt)) {
                 // update pen cursor
@@ -110,7 +110,6 @@ namespace JSI {
                 curscene.handleEraserDrag(pt);
             }
         }
-
         public void eraserUp(Vector2 pt) {
             if (this.mJSI.getPenMarkMgr().eraserUp(pt)) {
                 // update pen cursor
@@ -213,6 +212,17 @@ namespace JSI {
             JSIScene curscene = (JSIScene) this.mJSI.getScenarioMgr().
                 getCurScene();
             curscene.handleMsg(msg);
+        }
+        // VR
+        public void VRheadsetMounted() {
+            JSIScene curscene = (JSIScene)this.mJSI.getScenarioMgr().
+                getCurScene();
+            curscene.handleVRHeadsetMount();
+        }
+        public void VRheadsetUnmounted() {
+            JSIScene curscene = (JSIScene)this.mJSI.getScenarioMgr().
+                getCurScene();
+            curscene.handleVRHeadsetUnmount();
         }
     }
 }

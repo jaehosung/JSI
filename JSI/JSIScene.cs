@@ -36,6 +36,11 @@ namespace JSI {
             jsi.getPerspCameraPerson().getCamera().enabled = true;
             jsi.getOrthoCameraPerson().getCamera().enabled = true;
         }
+        public abstract void handleLeftPinchStart();
+        public abstract void handleLeftPinchEnd();
+        public abstract void handleRightPinchStart();
+        public abstract void handleRightPinchEnd();
+        public abstract void handleHandsMove();
 
         // msg
         public void handleMsg(JSIMsg msg) {

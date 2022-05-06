@@ -129,6 +129,66 @@ namespace JSI.Scenario {
             public override void handleTouchUp() {
             }
 
+            public override void handleLeftPinchStart() {
+                JSIApp jsi = (JSIApp)this.mScenario.getApp();
+                JSIHand leftHand = jsi.getHandMgr().getLeftHand();
+                Vector3 leftPinchPos = leftHand.calcPinchPos();
+                JSIUtil.createDebugSphere(leftPinchPos);
+            }
+
+            public override void handleLeftPinchEnd() {
+                JSIApp jsi = (JSIApp)this.mScenario.getApp();
+                JSIHand leftHand = jsi.getHandMgr().getLeftHand();
+                Vector3 leftPinchPos = leftHand.calcPinchPos();
+                JSIUtil.createDebugSphere(leftPinchPos);
+                
+                foreach (JSIStandingCard sc in jsi.getStandingCardMgr().
+                             getStandingCards()) {
+                    // scale handle
+                    // if (tc.hits(sc.getScaleHandle())) {
+                    //     JSICmdToSelectSmallestStandingCardByScaleHandle.
+                    //         execute(jsi, tc);
+                    //     XCmdToChangeScene.execute(jsi,
+                    //         JSIEditStandingCardScenario.ScaleWithTouchScene.
+                    //             getSingleton(), this);
+                    //     return;
+                    // }
+                    //
+                    // // stand
+                    // if (tc.hits(sc.getStand())) {
+                    //     JSICmdToSelectSmallestStandingCardByStand.
+                    //         execute(jsi, tc);
+                    //     XCmdToChangeScene.execute(jsi,
+                    //         JSIEditStandingCardScenario.MoveWithTouchScene.
+                    //             getSingleton(), this);
+                    //     return;
+                    // }
+                    
+                 
+                    
+                    
+                }
+                
+                
+            }
+
+            public override void handleRightPinchStart() {
+                JSIApp jsi = (JSIApp)this.mScenario.getApp();
+                JSIHand rightHand = jsi.getHandMgr().getRightHand();
+                Vector3 rightPinchPos = rightHand.calcPinchPos();
+                JSIUtil.createDebugSphere(rightPinchPos);
+            }
+
+            public override void handleRightPinchEnd() {
+                JSIApp jsi = (JSIApp)this.mScenario.getApp();
+                JSIHand rightHand = jsi.getHandMgr().getRightHand();
+                Vector3 rightPinchPos = rightHand.calcPinchPos();
+                JSIUtil.createDebugSphere(rightPinchPos);
+            }
+
+            public override void handleHandsMove() {
+            }
+
             public override void getReady() {
                 JSIApp jsi = (JSIApp)this.mScenario.getApp();
 

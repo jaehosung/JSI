@@ -19,6 +19,10 @@ namespace JSI {
         public GameObject getVRCenterEyeAnchor() {
             return this.mVRCenterEyeAnchor;
         }
+        [SerializeField]
+        private GameObject mVRLeftHandPrefab = null;
+        [SerializeField]
+        private GameObject mVRRightHandPrefab = null;
 
         // fields
         private JSIPerspCameraPerson mPerspCameraPerson = null;
@@ -77,6 +81,10 @@ namespace JSI {
         private JSICursorMgr mCursorMgr = null;
         public JSICursorMgr getCursorMgr() {
             return this.mCursorMgr;
+        }
+        private JSIHandMgr mHandMgr = null;
+        public JSIHandMgr getHandMgr() {
+            return this.mHandMgr;
         }
 
         private void configureUnity() {
@@ -137,11 +145,13 @@ namespace JSI {
             // this.mMouseEventSource = new JSIMouseEventSource();
             this.mPenEventSource = new JSIPenEventSource();
             this.mTouchEventSource = new JSITouchEventSource();
-            this.mVREventSource = new JSIVREventSource();
+            this.mVREventSource = new JSIVREventSource(this);
             this.mEventListener = new JSIEventListener(this);
             // this.mCursor = new JSICursor2D(this);
             this.mTouchMarkMgr = new JSITouchMarkMgr();
             this.mCursorMgr = new JSICursorMgr(this);
+            this.mHandMgr = new JSIHandMgr(this.mVRLeftHandPrefab, this.
+                mVRRightHandPrefab);
 
             this.mKeyEventSource.setEventListener(this.mEventListener);
             // this.mMouseEventSource.setEventListener(this.mEventListener);

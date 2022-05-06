@@ -224,5 +224,30 @@ namespace JSI {
                 getCurScene();
             curscene.handleVRHeadsetUnmount();
         }
+        public void leftPinchStart() {
+            JSIScene curscene = (JSIScene)this.mJSI.getScenarioMgr().
+                getCurScene();
+            curscene.handleLeftPinchStart();
+        }
+        public void leftPinchEnd() {
+            JSIScene curscene = (JSIScene)this.mJSI.getScenarioMgr().
+                getCurScene();
+            curscene.handleLeftPinchEnd();
+        }
+        public void rightPinchStart() {
+            JSIScene curscene = (JSIScene)this.mJSI.getScenarioMgr().
+                getCurScene();
+            curscene.handleRightPinchStart();
+        }
+        public void rightPinchEnd() {
+            JSIScene curscene = (JSIScene)this.mJSI.getScenarioMgr().
+                getCurScene();
+            curscene.handleRightPinchEnd();
+        }
+        public void handsMove() {
+            JSIScene curscene = (JSIScene)this.mJSI.getScenarioMgr().
+                getCurScene();
+            curscene.handleHandsMove();
+        }
     }
 }

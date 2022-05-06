@@ -53,6 +53,21 @@ namespace JSI.Scenario {
             public override void handleTouchUp() {
             }
 
+            public override void handleLeftPinchStart() {
+            }
+
+            public override void handleLeftPinchEnd() {
+            }
+
+            public override void handleRightPinchStart() {
+            }
+
+            public override void handleRightPinchEnd() {
+            }
+
+            public override void handleHandsMove() {
+            }
+
             public override void getReady() {
             }
 

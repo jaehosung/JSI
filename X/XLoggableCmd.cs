@@ -14,7 +14,7 @@ namespace X {
 
         public bool execute() {
             if (this.defineCmd()) {
-                this.mApp.getLogMgr().addLog(this.createLog(this.createLogData()));
+                // this.mApp.getLogMgr().addLog(this.createLog(this.createLogData()));
                 return true;
             } else {
                 return false;

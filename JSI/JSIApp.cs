@@ -159,14 +159,13 @@ namespace JSI {
             this.mTouchEventSource.setEventListener(this.mEventListener);
             this.mVREventSource.setEventListener(this.mEventListener);
 
-            this.mDeliveryPerson = new JSIDeliveryPerson();
-            this.mDeliveryPerson.setEventListener(this.mEventListener);
-            this.mDeliveryPerson.connectTo(this.mWebSocketUri);
+            // this.mDeliveryPerson = new JSIDeliveryPerson();
+            // this.mDeliveryPerson.setEventListener(this.mEventListener);
+            // this.mDeliveryPerson.connectTo(this.mWebSocketUri);
 
             // send hello message to everyone.
             JSICmdToSendHelloMsg.execute(this);
         }
-
         private void Update() {
             this.mOrthoCameraPerson.update();
             this.mKeyEventSource.update();

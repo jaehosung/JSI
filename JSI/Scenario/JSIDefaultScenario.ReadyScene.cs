@@ -134,6 +134,18 @@ namespace JSI.Scenario {
                 JSIHand leftHand = jsi.getHandMgr().getLeftHand();
                 Vector3 leftPinchPos = leftHand.calcPinchPos();
                 JSIUtil.createDebugSphere(leftPinchPos);
+                
+                foreach (JSIStandingCard sc in jsi.getStandingCardMgr().
+                             getStandingCards()) {
+                    if(leftHand.intersects(sc)){
+                        JSICmdToSelectStandingCardByHand.execute(jsi,sc,leftHand);
+                        XCmdToChangeScene.execute(jsi,
+                        JSIEditStandingCardScenario.MoveWithHand.
+                                  getSingleton(),this);
+                        Debug.Log("selected");
+                        return;
+                    }
+                }
             }
 
             public override void handleLeftPinchEnd() {
@@ -141,34 +153,6 @@ namespace JSI.Scenario {
                 JSIHand leftHand = jsi.getHandMgr().getLeftHand();
                 Vector3 leftPinchPos = leftHand.calcPinchPos();
                 JSIUtil.createDebugSphere(leftPinchPos);
-                
-                foreach (JSIStandingCard sc in jsi.getStandingCardMgr().
-                             getStandingCards()) {
-                    // scale handle
-                    // if (tc.hits(sc.getScaleHandle())) {
-                    //     JSICmdToSelectSmallestStandingCardByScaleHandle.
-                    //         execute(jsi, tc);
-                    //     XCmdToChangeScene.execute(jsi,
-                    //         JSIEditStandingCardScenario.ScaleWithTouchScene.
-                    //             getSingleton(), this);
-                    //     return;
-                    // }
-                    //
-                    // // stand
-                    // if (tc.hits(sc.getStand())) {
-                    //     JSICmdToSelectSmallestStandingCardByStand.
-                    //         execute(jsi, tc);
-                    //     XCmdToChangeScene.execute(jsi,
-                    //         JSIEditStandingCardScenario.MoveWithTouchScene.
-                    //             getSingleton(), this);
-                    //     return;
-                    // }
-                    
-                 
-                    
-                    
-                }
-                
                 
             }
 

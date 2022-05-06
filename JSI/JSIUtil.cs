@@ -23,12 +23,24 @@ namespace JSI {
 
         // methods
         public static void createDebugSphere(Vector3 pt) {
-            GameObject debugSphere = GameObject.CreatePrimitive(
-                PrimitiveType.Sphere);
-            debugSphere.name = "DebugSphere";
-            debugSphere.transform.position = pt;
-            debugSphere.transform.localScale = 0.05f * Vector3.one;
-            debugSphere.GetComponent<MeshRenderer>().material.color = Color.red;
+            // GameObject debugSphere = GameObject.CreatePrimitive(
+            //     PrimitiveType.Sphere);
+            // debugSphere.name = "DebugSphere";
+            // debugSphere.transform.position = pt;
+            // debugSphere.transform.localScale = 0.05f * Vector3.one;
+            // debugSphere.GetComponent<MeshRenderer>().material.color = Color.red;
+            // return debugSphere;
+        }
+        
+        public static GameObject createDebugCube(Vector3 pos, Quaternion rot) {
+            GameObject debugCube = GameObject.CreatePrimitive(
+                PrimitiveType.Cube);
+            debugCube.name = "DebugCube";
+            debugCube.transform.position = pos;
+            debugCube.transform.rotation = rot;
+            debugCube.transform.localScale = new Vector3(1,2,0.01f);
+            debugCube.GetComponent<MeshRenderer>().material.color = Color.blue;
+            return debugCube;
         }
         public static string createId() {
             char[] idChars = new char[ID_LENGTH];

@@ -32,7 +32,7 @@ namespace JSI.Cmd {
                 jsi.getUsername(), this.mTo, this.mSc);
             JSISerializableMsgToAddStandingCard sMsg =
                new JSISerializableMsgToAddStandingCard(msg);
-            jsi.getDeliveryPerson().sendSerializableMsg(sMsg);
+            // jsi.getDeliveryPerson().sendSerializableMsg(sMsg);
 
             return true;
         }

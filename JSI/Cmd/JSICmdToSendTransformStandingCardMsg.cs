@@ -47,7 +47,7 @@ namespace JSI.Cmd {
                 this.mCardId, this.mPos, this.mRot, this.mWidth, this.mHeight);
             JSISerializableMsgToTransformStandingCard sMsg =
                 new JSISerializableMsgToTransformStandingCard(msg);
-            jsi.getDeliveryPerson().sendSerializableMsg(sMsg);
+            // jsi.getDeliveryPerson().sendSerializableMsg(sMsg);
 
             return true;
         }

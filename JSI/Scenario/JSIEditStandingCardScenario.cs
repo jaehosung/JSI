@@ -35,6 +35,8 @@ namespace JSI.Scenario {
                 createSingleton(this));
             this.addScene(JSIEditStandingCardScenario.MoveNRotateWithTouchScene.
                 createSingleton(this));
+            this.addScene(JSIEditStandingCardScenario.MoveWithHand.
+                createSingleton(this));
         }
 
         // fields
@@ -112,5 +114,8 @@ namespace JSI.Scenario {
 
             return smallestStandingCard;
         }
+        public Vector3 mInitPinchPoint = new Vector3(0,0,0);
+        public Vector3 mInitStandingCardPos = new Vector3(0,0,0);
+         
     }
 }
